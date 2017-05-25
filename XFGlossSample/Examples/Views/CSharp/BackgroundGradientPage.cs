@@ -40,7 +40,7 @@ namespace XFGlossSample.Examples.Views.CSharp
 			(https://forums.xamarin.com/discussion/18037/tablesection-w-out-header)
 			*/
 			TableSection section;
-			if (Device.OS == TargetPlatform.Android)
+			if (Device.RuntimePlatform == Device.Android)
 			{
 				section = new TableSection("Cell BackgroundGradient values set in C#:");
 			}
@@ -53,7 +53,7 @@ namespace XFGlossSample.Examples.Views.CSharp
 
 			var stack = new StackLayout();
 
-			if (Device.OS == TargetPlatform.iOS)
+			if (Device.RuntimePlatform == Device.iOS)
 			{
 				stack.Children.Add(new Label { Text = "Cell BackgroundGradient values set in C#:", Margin = new Thickness(10) });
 			}
@@ -62,7 +62,7 @@ namespace XFGlossSample.Examples.Views.CSharp
 				Intent = TableIntent.Data,
 				BackgroundColor = Color.Transparent,
 				VerticalOptions = LayoutOptions.Start,
-				HeightRequest = Device.OnPlatform<double>(176, 232, 0),
+				HeightRequest = GenerateHeightRequest(176, 232, 0),
 				Root = new TableRoot
 				{
 					section
@@ -76,7 +76,27 @@ namespace XFGlossSample.Examples.Views.CSharp
 			ContentPageGloss.SetBackgroundGradient(this, new Gradient(Color.White, Color.FromRgb(128, 0, 0)));
 		}
 
-		protected override void OnAppearing()
+        private double GenerateHeightRequest(int iosvalue, int andvalue, int winvalue)
+        {
+            double ret = 0;
+            switch (Device.RuntimePlatform)
+            {
+                case Device.iOS:
+                    ret = iosvalue;
+                    break;
+                case Device.Android:
+                    ret = andvalue;
+                    break;
+                case Device.Windows:
+                case Device.WinPhone:
+                default:
+                    ret = winvalue;
+                    break;
+            }
+            return ret;
+        }
+
+        protected override void OnAppearing()
 		{
 			base.OnAppearing();
 

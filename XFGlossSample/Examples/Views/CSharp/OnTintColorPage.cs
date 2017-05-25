@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System;
 using Xamarin.Forms;
 using XFGloss;
 
@@ -31,7 +32,7 @@ namespace XFGlossSample.Examples.Views.CSharp
 			(https://forums.xamarin.com/discussion/18037/tablesection-w-out-header)
 			*/
 			TableSection section;
-			if (Device.OS == TargetPlatform.Android)
+			if (Device.RuntimePlatform == Device.Android)
 			{
 				section = new TableSection("SwitchCell OnTintColor values set in C#:");
 			}
@@ -44,7 +45,7 @@ namespace XFGlossSample.Examples.Views.CSharp
 			section.Add(CreateOnTintColorCell("Blue", Color.Blue));
 
 			var stack = new StackLayout();
-			if (Device.OS == TargetPlatform.iOS)
+			if (Device.RuntimePlatform == Device.iOS)
 			{
 				stack.Children.Add(new Label { Text = "SwitchCell OnTintColor values set in C#:", Margin = new Thickness(10) });
 			}
@@ -52,7 +53,7 @@ namespace XFGlossSample.Examples.Views.CSharp
 			stack.Children.Add(new TableView()
 			{
 				Intent = TableIntent.Data,
-				HeightRequest = Device.OnPlatform<double>(132, 190, 0),
+				HeightRequest = GenerateHeightRequest(132, 190, 0),
 				Root = new TableRoot()
 				{
 					section
@@ -72,7 +73,27 @@ namespace XFGlossSample.Examples.Views.CSharp
 			Content = stack;
 		}
 
-		SwitchCell CreateOnTintColorCell(string colorName, Color colorValue)
+        private double GenerateHeightRequest(int iosvalue, int andvalue, int winvalue)
+        {
+            double ret = 0;
+            switch (Device.RuntimePlatform)
+            {
+                case Device.iOS:
+                    ret = iosvalue;
+                    break;
+                case Device.Android:
+                    ret = andvalue;
+                    break;
+                case Device.Windows:
+                case Device.WinPhone:
+                default:
+                    ret = winvalue;
+                    break;
+            }
+            return ret;
+        }
+
+        SwitchCell CreateOnTintColorCell(string colorName, Color colorValue)
 		{
 				var result = new SwitchCell();
 				result.Text = colorName;

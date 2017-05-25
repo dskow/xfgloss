@@ -31,7 +31,7 @@ namespace XFGlossSample.Examples.ViewModels
 			{
 				string result;
 
-				if (Device.OS == TargetPlatform.iOS)
+				if (Device.RuntimePlatform == Device.iOS)
 				{
 					result = "Specifies a numeric or named XF.Color value to apply to the cell's accessory view or " +
 							"the track/border portion of the Switch control when the control is in the \"Off\" " +
@@ -56,7 +56,7 @@ namespace XFGlossSample.Examples.ViewModels
 		{
 			get 
 			{
-				if (Device.OS == TargetPlatform.iOS)
+				if (Device.RuntimePlatform == Device.iOS)
 				{
 					return "EntryCell, ImageCell, Switch, SwitchCell, TextCell, ViewCell";
 				}
@@ -69,7 +69,7 @@ namespace XFGlossSample.Examples.ViewModels
 
 		public bool isRunningiOS
 		{
-			get { return Device.OS == TargetPlatform.iOS; }
+			get { return Device.RuntimePlatform == Device.iOS; }
 		}
 	}
 }
